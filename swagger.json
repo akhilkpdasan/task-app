@@ -1,0 +1,142 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Task API",
+    "description": "API for managing tasks.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/task": {
+      "post": {
+        "summary": "Create a new task.",
+        "description": "Create a new task with the provided title and description.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "The title of the task."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "The description of the task."
+                  }
+                },
+                "required": ["title", "description"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Task created successfully."
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a task by ID.",
+        "description": "Update an existing task with the provided data.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The ID of the task to update.",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "The updated title of the task."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "The updated description of the task."
+                  },
+                  "task_status": {
+                    "type": "string",
+                    "description": "The updated status of the task (optional)."
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Task updated successfully."
+            },
+            "404": {
+              "description": "Task not found."
+            }
+          }
+        }
+      }
+    },
+    "/tasks": {
+      "get": {
+        "summary": "Get a paginated list of tasks.",
+        "description": "Retrieve a paginated list of tasks.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "description": "The page number (default: 1).",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "description": "The page limit (default: 10).",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tasks returned successfully."
+          }
+        }
+      }
+    },
+    "/tasks/metrics": {
+      "get": {
+        "summary": "Get task metrics.",
+        "description": "Retrieve task metrics, either grouped by status or by month.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "monthWise",
+            "required": false,
+            "description": "Fetch metrics by month (true or false).",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task metrics returned successfully."
+          }
+        }
+      }
+    }
+  }
+}
